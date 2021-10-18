@@ -383,7 +383,7 @@ const char GENESIS_COINBASE_TX_HEX[] = "012801ff000188f3b501029b2e4c0281c0b02e7c
         {0xb5, 0x0c, 0x4a, 0x8c, 0xcf, 0x52, 0x57, 0x41, 0x65, 0xf9, 0x91, 0xa4, 0xb6, 0xc6, 0x43, 0xe9}};
 
     const char *const SEED_NODES[] = {
-        "145.251.194.145:22897", // node1
+        "145.251.194.180:22897", // node1
         "78.46.80.10:22897", // node2
     };
 } // namespace CryptoNote
