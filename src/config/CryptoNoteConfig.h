@@ -377,7 +377,7 @@ namespace CryptoNote
 
     const char LATEST_VERSION_URL[] = "http://latest.atc-coin.com";
 
-    const std::string LICENSE_URL = "https://github.com/turtlecoin/turtlecoin/blob/master/LICENSE";
+    const std::string LICENSE_URL = "https://github.com/ATC-Coin/ATC-Coin/blob/development/LICENSE";
 
     const static boost::uuids::uuid CRYPTONOTE_NETWORK = {
         {0xb5, 0x0c, 0x4a, 0x8c, 0xcf, 0x52, 0x57, 0x41, 0x65, 0xf9, 0x91, 0xa4, 0xb6, 0xc6, 0x43, 0xe9}};
