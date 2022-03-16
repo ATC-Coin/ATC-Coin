@@ -30,7 +30,7 @@ namespace CryptoNote
 
         const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = 0x7d24a;
 
-        const uint32_t CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW = 40;
+        const uint32_t CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW = 10;
 
         const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT = 60 * 60 * 2;
 
@@ -113,24 +113,24 @@ namespace CryptoNote
 
         const uint64_t MAXIMUM_MIXIN_V1 = 100;
 
-        const uint64_t MINIMUM_MIXIN_V2 = 1;
+        const uint64_t MINIMUM_MIXIN_V2 = 7;
 
-        const uint64_t MAXIMUM_MIXIN_V2 = 1;
+        const uint64_t MAXIMUM_MIXIN_V2 = 7;
 
-        const uint64_t MINIMUM_MIXIN_V3 = 2;
+        const uint64_t MINIMUM_MIXIN_V3 = 3;
 
-        const uint64_t MAXIMUM_MIXIN_V3 = 2;
+        const uint64_t MAXIMUM_MIXIN_V3 = 3;
 
         /* The heights to activate the mixin limits at */
         const uint32_t MIXIN_LIMITS_V1_HEIGHT = 0;
 
-        const uint32_t MIXIN_LIMITS_V2_HEIGHT = 1000;
+        const uint32_t MIXIN_LIMITS_V2_HEIGHT = 100;
 
-        const uint32_t MIXIN_LIMITS_V3_HEIGHT = 10000;
+        const uint32_t MIXIN_LIMITS_V3_HEIGHT = 200;
 
         /* The mixin to use by default with wallet software */
         /* DEFAULT_MIXIN_V0 is the mixin used before MIXIN_LIMITS_V1_HEIGHT is started */
-        const uint64_t DEFAULT_MIXIN_V0 = 0;
+        const uint64_t DEFAULT_MIXIN_V0 = 3;
 
         const uint64_t DEFAULT_MIXIN_V1 = MAXIMUM_MIXIN_V1;
 
@@ -144,15 +144,15 @@ namespace CryptoNote
 
         const uint32_t DUST_THRESHOLD_V2_HEIGHT = MIXIN_LIMITS_V2_HEIGHT;
 
-        const uint32_t FUSION_DUST_THRESHOLD_HEIGHT_V2 = 800000;
+        const uint32_t FUSION_DUST_THRESHOLD_HEIGHT_V2 = 100;
 
         const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY = 24 * 60 * 60 / DIFFICULTY_TARGET;
 
         const size_t DIFFICULTY_WINDOW = 17;
 
-        const size_t DIFFICULTY_WINDOW_V1 = 2880;
+        const size_t DIFFICULTY_WINDOW_V1 = 280;
 
-        const size_t DIFFICULTY_WINDOW_V2 = 2880;
+        const size_t DIFFICULTY_WINDOW_V2 = 280;
 
         const uint64_t DIFFICULTY_WINDOW_V3 = 60;
 
@@ -197,11 +197,11 @@ namespace CryptoNote
         /* For new projects forked from this code base, the values immediately below
            should be changed to 0 to prevent issues with transaction processing
            and other possible unexpected behavior */
-        const uint64_t TRANSACTION_SIGNATURE_COUNT_VALIDATION_HEIGHT = 0;
+        const uint64_t TRANSACTION_SIGNATURE_COUNT_VALIDATION_HEIGHT = 10;
 
-        const uint64_t BLOCK_BLOB_SHUFFLE_CHECK_HEIGHT = 0;
+        const uint64_t BLOCK_BLOB_SHUFFLE_CHECK_HEIGHT = 10;
 
-        const uint64_t TRANSACTION_INPUT_BLOCKTIME_VALIDATION_HEIGHT = 0;
+        const uint64_t TRANSACTION_INPUT_BLOCKTIME_VALIDATION_HEIGHT = 10;
 
         /* Coinbase transactions must include the recipient address + tx priv
          * key in tx_extra to verify the outputs go to that address after this
