@@ -79,10 +79,10 @@ namespace CryptoNote
 
         const size_t CRYPTONOTE_REWARD_BLOCKS_WINDOW = 100;
 
-        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE = 10000; // size of block (bytes) after which reward for block calculated using block size
-        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2 = 20000;
+        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE = 1000; // size of block (bytes) after which reward for block calculated using block size
+        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2 = 2000;
 
-        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1 = 10000;
+        const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1 = 1000;
 
         const size_t CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_CURRENT = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE;
 
@@ -180,7 +180,7 @@ namespace CryptoNote
 
         const uint64_t MAX_EXTRA_SIZE_V2 = 1024;
 
-        const uint64_t MAX_EXTRA_SIZE_V2_HEIGHT = 1300000;
+        const uint64_t MAX_EXTRA_SIZE_V2_HEIGHT = 7;
 
         /* 25 trillion atomic, or 250 billion TRTL -> Max supply / mixin+1 outputs */
         /* This is enforced on the daemon side. An output > 250 billion causes
@@ -260,6 +260,13 @@ namespace CryptoNote
 
         /* Block heights we are going to have hard forks at */
         const uint64_t FORK_HEIGHTS[] = {
+            
+            1, // 0
+            2, // 1
+            3, // 2
+            4, // 3
+            5, // 4
+            6, // 5
             /*1, // 0
             2, // 1 */
         };
