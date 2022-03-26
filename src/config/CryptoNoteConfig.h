@@ -74,8 +74,8 @@ namespace CryptoNote
 
         /* This is the unix timestamp of the first "mined" block (technically block 2, not the genesis block)
            You can get this value by doing "print_block 2" in TurtleCoind. It is used to know what timestamp
-           to import from when the block height cannot be found in the node or the node is offline. */
-        const uint64_t GENESIS_BLOCK_TIMESTAMP = 1647354424;
+           to import from when the block height cannot be found in the node or the node is offline.1647354424 */
+        const uint64_t GENESIS_BLOCK_TIMESTAMP = 1647716704;
 
         const size_t CRYPTONOTE_REWARD_BLOCKS_WINDOW = 100;
 
@@ -106,7 +106,7 @@ namespace CryptoNote
         const double MINIMUM_FEE_PER_BYTE_V1 = 500.00 / FEE_PER_BYTE_CHUNK_SIZE;
 
         /* Height for our first fee to byte change to take effect. */
-        const uint64_t MINIMUM_FEE_PER_BYTE_V1_HEIGHT = 2200000;
+        const uint64_t MINIMUM_FEE_PER_BYTE_V1_HEIGHT = 1000;
 
         /* This section defines our minimum and maximum mixin counts required for transactions */
         const uint64_t MINIMUM_MIXIN_V1 = 0;
@@ -144,15 +144,15 @@ namespace CryptoNote
 
         const uint32_t DUST_THRESHOLD_V2_HEIGHT = MIXIN_LIMITS_V2_HEIGHT;
 
-        const uint32_t FUSION_DUST_THRESHOLD_HEIGHT_V2 = 100;
+        const uint32_t FUSION_DUST_THRESHOLD_HEIGHT_V2 = 800'000;
 
         const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY = 24 * 60 * 60 / DIFFICULTY_TARGET;
 
         const size_t DIFFICULTY_WINDOW = 17;
 
-        const size_t DIFFICULTY_WINDOW_V1 = 280;
+        const size_t DIFFICULTY_WINDOW_V1 = 2800;
 
-        const size_t DIFFICULTY_WINDOW_V2 = 280;
+        const size_t DIFFICULTY_WINDOW_V2 = 2800;
 
         const uint64_t DIFFICULTY_WINDOW_V3 = 60;
 
@@ -176,7 +176,7 @@ namespace CryptoNote
 
         const uint64_t MAX_BLOCK_SIZE_GROWTH_SPEED_DENOMINATOR = 365 * 24 * 60 * 60 / DIFFICULTY_TARGET;
 
-        const uint64_t MAX_EXTRA_SIZE = 140000;
+        const uint64_t MAX_EXTRA_SIZE = 1400;
 
         const uint64_t MAX_EXTRA_SIZE_V2 = 1024;
 
@@ -192,7 +192,7 @@ namespace CryptoNote
          * be created in a transaction */
         const uint64_t MAX_OUTPUT_SIZE_CLIENT = 1'000'000'000'00;
 
-        const uint64_t MAX_OUTPUT_SIZE_HEIGHT = 2000000;
+        const uint64_t MAX_OUTPUT_SIZE_HEIGHT = 2000;
 
         /* For new projects forked from this code base, the values immediately below
            should be changed to 0 to prevent issues with transaction processing
@@ -236,7 +236,7 @@ namespace CryptoNote
 
         const size_t NORMAL_TX_MAX_OUTPUT_COUNT_V1 = 90;
 
-        const size_t NORMAL_TX_MAX_OUTPUT_COUNT_V1_HEIGHT = 2200000;
+        const size_t NORMAL_TX_MAX_OUTPUT_COUNT_V1_HEIGHT = 2200;
 
         const uint32_t UPGRADE_HEIGHT_V2 = 1;
 
