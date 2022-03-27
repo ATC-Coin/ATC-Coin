@@ -205,7 +205,7 @@ namespace CryptoNote
         /* Coinbase transactions must include the recipient address + tx priv
          * key in tx_extra to verify the outputs go to that address after this
          * height. */
-        const uint64_t COINBASE_TRANSACTION_OUTPUT_CLAIMING_HEIGHT = 2'800'000;
+        const uint64_t COINBASE_TRANSACTION_OUTPUT_CLAIMING_HEIGHT = 1'000;
 
         /* This describes how many blocks of "wiggle" room transactions have regarding
            when the outputs can be spent based on a reasonable belief that the outputs
