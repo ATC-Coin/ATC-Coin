@@ -66,7 +66,8 @@ namespace CryptoNote
             "010a01ff000188f3b501029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd088071210142694232c5b04151"
             "d9e4c27d31ec7a68ea568b19488cfcb422659a07a0e44dd5";*/
         
- const char GENESIS_COINBASE_TX_HEX[] = "010a01ff000188f3b501029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd088071840101deceb9b12836d7a5c86ab260009c85223474f1694851d452c895eecd075f0374040000000000000000000000000000000000000000000000000000000000000000050000000000000000000000000000000000000000000000000000000000000000067530806e5361bb090dd636e047f0684f0a92036a701851d17210c6eacf3b7101";       
+        const char GENESIS_COINBASE_TX_HEX[] = "010a01ff000188f3b501029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd088071840101deceb9b12836d7a5c86ab260009c85223474f1694851d452c895eecd075f0374040000000000000000000000000000000000000000000000000000000000000000050000000000000000000000000000000000000000000000000000000000000000067530806e5361bb090dd636e047f0684f0a92036a701851d17210c6eacf3b7101";       
+       
         static_assert(
             sizeof(GENESIS_COINBASE_TX_HEX) / sizeof(*GENESIS_COINBASE_TX_HEX) != 1,
             "GENESIS_COINBASE_TX_HEX must not be empty.");
@@ -105,7 +106,7 @@ namespace CryptoNote
         const double MINIMUM_FEE_PER_BYTE_V1 = 500.00 / FEE_PER_BYTE_CHUNK_SIZE;
 
         /* Height for our first fee to byte change to take effect. */
-        const uint64_t MINIMUM_FEE_PER_BYTE_V1_HEIGHT = 1000;
+        const uint64_t MINIMUM_FEE_PER_BYTE_V1_HEIGHT = 100;
 
         /* This section defines our minimum and maximum mixin counts required for transactions */
         const uint64_t MINIMUM_MIXIN_V1 = 0;
@@ -143,15 +144,15 @@ namespace CryptoNote
 
         const uint32_t DUST_THRESHOLD_V2_HEIGHT = MIXIN_LIMITS_V2_HEIGHT;
 
-        const uint32_t FUSION_DUST_THRESHOLD_HEIGHT_V2 = 2800;
+        const uint32_t FUSION_DUST_THRESHOLD_HEIGHT_V2 = 200;
 
         const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY = 24 * 60 * 60 / DIFFICULTY_TARGET;
 
         const size_t DIFFICULTY_WINDOW = 17;
 
-        const size_t DIFFICULTY_WINDOW_V1 = 2800;
+        const size_t DIFFICULTY_WINDOW_V1 = 200;
 
-        const size_t DIFFICULTY_WINDOW_V2 = 2800;
+        const size_t DIFFICULTY_WINDOW_V2 = 200;
 
         const uint64_t DIFFICULTY_WINDOW_V3 = 60;
 
@@ -205,7 +206,7 @@ namespace CryptoNote
         /* Coinbase transactions must include the recipient address + tx priv
          * key in tx_extra to verify the outputs go to that address after this
          * height. */
-        const uint64_t COINBASE_TRANSACTION_OUTPUT_CLAIMING_HEIGHT = 1'000;
+        const uint64_t COINBASE_TRANSACTION_OUTPUT_CLAIMING_HEIGHT = 100;
 
         /* This describes how many blocks of "wiggle" room transactions have regarding
            when the outputs can be spent based on a reasonable belief that the outputs
@@ -265,7 +266,7 @@ namespace CryptoNote
         };
 
         /* MAKE SURE TO UPDATE THIS VALUE WITH EVERY MAJOR RELEASE BEFORE A FORK */
-        const uint64_t SOFTWARE_SUPPORTED_FORK_INDEX = 17;
+        const uint64_t SOFTWARE_SUPPORTED_FORK_INDEX = 0;
 
         const uint64_t FORK_HEIGHTS_SIZE = sizeof(FORK_HEIGHTS) / sizeof(*FORK_HEIGHTS);
 
