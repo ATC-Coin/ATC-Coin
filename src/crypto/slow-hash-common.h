@@ -30,8 +30,7 @@ extern void aesb_single_round(const uint8_t *in, uint8_t *out, const uint8_t *ex
 extern void aesb_pseudo_round(const uint8_t *in, uint8_t *out, const uint8_t *expandedKey);
 
 #pragma pack(push, 1)
-union cn_slow_hash_state
-{
+union cn_slow_hash_state {
     union hash_state hs;
     struct
     {

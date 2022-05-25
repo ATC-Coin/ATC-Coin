@@ -1,16 +1,12 @@
 // Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 // Copyright (c) 2014-2018, The Monero Project
-// Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2018-2019, The TurtleCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
 /////////////////////////
 #include "MinerManager.h"
 /////////////////////////
-
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
 
 #include <common/CryptoNoteTools.h>
 #include <common/StringTools.h>
@@ -19,6 +15,8 @@
 #include <miner/BlockUtilities.h>
 #include <utilities/ColouredMsg.h>
 #include <utilities/FormatTools.h>
+
+using json = nlohmann::json;
 
 namespace Miner
 {
@@ -211,15 +209,12 @@ namespace Miner
 
     bool MinerManager::submitBlock(const CryptoNote::BlockTemplate &minedBlock)
     {
-        rapidjson::StringBuffer sb;
+        json j = {
+            {"jsonrpc", "2.0"}, {"method", "submitblock"}, {"params", {Common::toHex(toBinaryArray(minedBlock))}}};
 
-        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        auto res = m_httpClient->Post("/json_rpc", j.dump(), "application/json");
 
-        writer.String(Common::toHex(toBinaryArray(minedBlock)));
-
-        auto res = m_httpClient->Post("/block", sb.GetString(), "application/json");
-
-        if (res && res->status == 202)
+        if (!res || res->status == 200)
         {
             std::cout << SuccessMsg("\nBlock found! Hash: ") << SuccessMsg(getBlockHash(minedBlock)) << "\n\n";
 
@@ -236,21 +231,11 @@ namespace Miner
     {
         while (true)
         {
-            rapidjson::StringBuffer sb;
+            json j = {{"jsonrpc", "2.0"},
+                      {"method", "getblocktemplate"},
+                      {"params", {{"wallet_address", m_config.miningAddress}, {"reserve_size", 0}}}};
 
-            rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-
-            writer.StartObject();
-            {
-                writer.Key("address");
-                writer.String(m_config.miningAddress);
-
-                writer.Key("reserveSize");
-                writer.Uint(0);
-            }
-            writer.EndObject();
-
-            auto res = m_httpClient->Post("/block/template", sb.GetString(), "application/json");
+            auto res = m_httpClient->Post("/json_rpc", j.dump(), "application/json");
 
             if (!res)
             {
@@ -260,7 +245,7 @@ namespace Miner
                 continue;
             }
 
-            if (res->status != 201)
+            if (res->status != 200)
             {
                 std::stringstream stream;
 
@@ -273,36 +258,51 @@ namespace Miner
                 continue;
             }
 
-            rapidjson::Document jsonBody;
+            try
+            {
+                json j = json::parse(res->body);
 
-            if (jsonBody.Parse(res->body.c_str()).HasParseError())
+                const std::string status = j.at("result").at("status").get<std::string>();
+
+                if (status != "OK")
+                {
+                    std::stringstream stream;
+
+                    stream << "Failed to get block template from daemon. Response: " << status << std::endl;
+
+                    std::cout << WarningMsg(stream.str());
+
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                    continue;
+                }
+
+                CryptoNote::BlockMiningParameters params;
+                params.difficulty = j.at("result").at("difficulty").get<uint64_t>();
+
+                std::vector<uint8_t> blob = Common::fromHex(j.at("result").at("blocktemplate_blob").get<std::string>());
+
+                if (!fromBinaryArray(params.blockTemplate, blob))
+                {
+                    std::cout << WarningMsg("Couldn't parse block template from daemon.") << std::endl;
+
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                    continue;
+                }
+
+                return params;
+            }
+            catch (const json::exception &e)
             {
                 std::stringstream stream;
 
-                stream << "Failed to parse block template from daemon. Received data:\n" << res->body << std::endl;
+                stream << "Failed to parse block template from daemon. Received data:\n"
+                       << res->body << "\nParse error: " << e.what() << std::endl;
 
                 std::cout << WarningMsg(stream.str());
 
                 std::this_thread::sleep_for(std::chrono::seconds(1));
-
                 continue;
             }
-
-            CryptoNote::BlockMiningParameters params;
-
-            params.difficulty = getUint64FromJSON(jsonBody, "difficulty");
-
-            std::vector<uint8_t> blob = Common::fromHex(getStringFromJSON(jsonBody, "blob"));
-
-            if (!fromBinaryArray(params.blockTemplate, blob))
-            {
-                std::cout << WarningMsg("Couldn't parse block template from daemon.") << std::endl;
-
-                std::this_thread::sleep_for(std::chrono::seconds(1));
-                continue;
-            }
-
-            return params;
         }
     }
 

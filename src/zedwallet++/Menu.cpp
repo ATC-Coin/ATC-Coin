@@ -46,13 +46,6 @@ std::tuple<bool, bool, std::shared_ptr<WalletBackend>> selectionScreen(const Zed
             return {exit, sync, nullptr};
         }
 
-        /*Reset wallet if user requested it*/
-        if (config.resetGiven)
-        {
-            const uint64_t timestamp = 0;
-            walletBackend->reset(config.resetFromHeight, timestamp);
-        }
-
         const auto [feeAmount, feeAddress] = walletBackend->getNodeFee();
 
         if (feeAmount != 0)

@@ -17,7 +17,8 @@ namespace CryptoNote
     }
 
     P2pContextOwner::P2pContextOwner(P2pContextOwner &&other):
-        contextList(other.contextList), contextIterator(other.contextIterator)
+        contextList(other.contextList),
+        contextIterator(other.contextIterator)
     {
         other.contextIterator = contextList.end();
     }

@@ -8,7 +8,8 @@
 namespace Logging
 {
     LoggerRef::LoggerRef(std::shared_ptr<ILogger> logger, const std::string &category):
-        logger(logger), category(category)
+        logger(logger),
+        category(category)
     {
     }
 

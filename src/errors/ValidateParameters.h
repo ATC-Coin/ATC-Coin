@@ -57,3 +57,4 @@ Error validateAddresses(std::vector<std::string> addresses, const bool integrate
 Error validateOurAddresses(const std::vector<std::string> addresses, const std::shared_ptr<SubWallets> subWallets);
 
 Error validateOptimizeTarget(const std::optional<uint64_t> optimizeTarget);
+

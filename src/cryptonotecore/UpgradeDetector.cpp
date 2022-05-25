@@ -13,7 +13,8 @@ namespace CryptoNote
     {
       public:
         SimpleUpgradeDetector(uint8_t targetVersion, uint32_t upgradeIndex):
-            m_targetVersion(targetVersion), m_upgradeIndex(upgradeIndex)
+            m_targetVersion(targetVersion),
+            m_upgradeIndex(upgradeIndex)
         {
         }
 

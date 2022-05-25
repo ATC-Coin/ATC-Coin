@@ -16,11 +16,8 @@ namespace Logging
 
     LoggerManager::LoggerManager() {}
 
-    void LoggerManager::operator()(
-        const std::string &category,
-        Level level,
-        boost::posix_time::ptime time,
-        const std::string &body)
+    void LoggerManager::
+        operator()(const std::string &category, Level level, boost::posix_time::ptime time, const std::string &body)
     {
         std::unique_lock<std::mutex> lock(reconfigureLock);
         LoggerGroup::operator()(category, level, time, body);

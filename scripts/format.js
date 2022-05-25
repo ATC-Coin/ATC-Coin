@@ -86,10 +86,9 @@ async function getFiles(directory) {
 
 async function formatFile(filePath) {
     try {
-        
         console.log(`Formatting ${filePath}`);
+
         await exec(`${binaryName} -i ${filePath}`);
-        
     } catch (err) {
         console.log(`Error formatting ${filePath}: ${err}`);
     }

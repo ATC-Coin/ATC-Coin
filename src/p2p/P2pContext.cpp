@@ -17,7 +17,8 @@ using namespace System;
 namespace CryptoNote
 {
     P2pContext::Message::Message(P2pMessage &&msg, Type messageType, uint32_t returnCode):
-        messageType(messageType), returnCode(returnCode)
+        messageType(messageType),
+        returnCode(returnCode)
     {
         type = msg.type;
         data = std::move(msg.data);

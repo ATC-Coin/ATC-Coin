@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <cryptonotecore/Core.h>
 #include "cryptonotecore/CryptoNoteBasic.h"
 
-#include <cryptonotecore/Core.h>
 #include <list>
 
 // ISerializer-based serialization
@@ -35,7 +35,8 @@ namespace CryptoNote
         RawBlockLegacy(
             const std::vector<uint8_t> blockTemplate_,
             const std::vector<std::vector<uint8_t>> transactions_):
-            blockTemplate(blockTemplate_), transactions(transactions_)
+            blockTemplate(blockTemplate_),
+            transactions(transactions_)
         {
         }
 

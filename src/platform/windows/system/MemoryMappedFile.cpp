@@ -16,7 +16,10 @@
 namespace System
 {
     MemoryMappedFile::MemoryMappedFile():
-        m_fileHandle(INVALID_HANDLE_VALUE), m_mappingHandle(INVALID_HANDLE_VALUE), m_size(0), m_data(nullptr)
+        m_fileHandle(INVALID_HANDLE_VALUE),
+        m_mappingHandle(INVALID_HANDLE_VALUE),
+        m_size(0),
+        m_data(nullptr)
     {
     }
 

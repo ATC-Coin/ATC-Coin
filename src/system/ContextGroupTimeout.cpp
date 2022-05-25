@@ -13,7 +13,8 @@ ContextGroupTimeout::ContextGroupTimeout(
     Dispatcher &dispatcher,
     ContextGroup &contextGroup,
     std::chrono::nanoseconds timeout):
-    workingContextGroup(dispatcher), timeoutTimer(dispatcher)
+    workingContextGroup(dispatcher),
+    timeoutTimer(dispatcher)
 {
     workingContextGroup.spawn([&, timeout] {
         try

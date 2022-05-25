@@ -7,7 +7,6 @@
 ////////////////////////////////
 
 #include <atomic>
-#include <cmath>
 #include <common/Base58.h>
 #include <config/CryptoNoteConfig.h>
 #include <thread>
@@ -174,10 +173,9 @@ namespace Utilities
         std::time_t time = std::time(nullptr);
 
         /* Take the amount of time a block can potentially be in the past/future */
-        std::initializer_list<uint64_t> limits = {
-            CryptoNote::parameters::CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT,
-            CryptoNote::parameters::CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V3,
-            CryptoNote::parameters::CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V4};
+        std::initializer_list<uint64_t> limits = {CryptoNote::parameters::CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT,
+                                                  CryptoNote::parameters::CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V3,
+                                                  CryptoNote::parameters::CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V4};
 
         /* Get the largest adjustment possible */
         uint64_t adjust = std::max(limits);
@@ -218,17 +216,29 @@ namespace Utilities
         return true;
     }
 
-    uint64_t getTransactionFee(const size_t transactionSize, const uint64_t height, const double feePerByte)
+    uint64_t getTransactionFee(
+        const size_t transactionSize,
+        const uint64_t height,
+        const double feePerByte)
     {
-        const uint64_t numChunks = static_cast<uint64_t>(
-            std::ceil(transactionSize / static_cast<double>(CryptoNote::parameters::FEE_PER_BYTE_CHUNK_SIZE)));
+        const uint64_t numChunks = static_cast<uint64_t>(std::ceil(
+            transactionSize / static_cast<double>(CryptoNote::parameters::FEE_PER_BYTE_CHUNK_SIZE)
+        ));
 
-        return static_cast<uint64_t>(numChunks * feePerByte * CryptoNote::parameters::FEE_PER_BYTE_CHUNK_SIZE);
+        return static_cast<uint64_t>(
+            numChunks * feePerByte * CryptoNote::parameters::FEE_PER_BYTE_CHUNK_SIZE
+        );
     }
 
-    uint64_t getMinimumTransactionFee(const size_t transactionSize, const uint64_t height)
+    uint64_t getMinimumTransactionFee(
+        const size_t transactionSize,
+        const uint64_t height)
     {
-        return getTransactionFee(transactionSize, height, CryptoNote::parameters::MINIMUM_FEE_PER_BYTE_V1);
+        return getTransactionFee(
+            transactionSize,
+            height,
+            CryptoNote::parameters::MINIMUM_FEE_PER_BYTE_V1
+        );
     }
 
     size_t estimateTransactionSize(
@@ -255,18 +265,28 @@ namespace Utilities
         const size_t PAYMENT_ID_SIZE = havePaymentID ? 34 : 0;
 
         /* The size of the transaction header */
-        const size_t headerSize = TRANSACTION_VERSION_SIZE + TRANSACTION_UNLOCK_TIME_SIZE + EXTRA_TAG_SIZE
-                                  + EXTRA_DATA_SIZE + PUBLIC_KEY_SIZE + PAYMENT_ID_SIZE;
-
+        const size_t headerSize = TRANSACTION_VERSION_SIZE
+                                + TRANSACTION_UNLOCK_TIME_SIZE
+                                + EXTRA_TAG_SIZE
+                                + EXTRA_DATA_SIZE
+                                + PUBLIC_KEY_SIZE
+                                + PAYMENT_ID_SIZE;
+        
         /* The size of each transaction input */
-        const size_t inputSize = INPUT_TAG_SIZE + AMOUNT_SIZE + KEY_IMAGE_SIZE + SIGNATURE_SIZE
-                                 + GLOBAL_INDEXES_VECTOR_SIZE_SIZE + GLOBAL_INDEXES_INITIAL_VALUE_SIZE
-                                 + mixin * SIGNATURE_SIZE;
+        const size_t inputSize = INPUT_TAG_SIZE
+                               + AMOUNT_SIZE
+                               + KEY_IMAGE_SIZE
+                               + SIGNATURE_SIZE
+                               + GLOBAL_INDEXES_VECTOR_SIZE_SIZE
+                               + GLOBAL_INDEXES_INITIAL_VALUE_SIZE
+                               + mixin * SIGNATURE_SIZE;
 
         const size_t inputsSize = inputSize * numInputs;
 
         /* The size of each transaction output. */
-        const size_t outputSize = OUTPUT_TAG_SIZE + OUTPUT_KEY_SIZE + AMOUNT_SIZE;
+        const size_t outputSize = OUTPUT_TAG_SIZE
+                                + OUTPUT_KEY_SIZE
+                                + AMOUNT_SIZE;
 
         const size_t outputsSize = outputSize * numOutputs;
 

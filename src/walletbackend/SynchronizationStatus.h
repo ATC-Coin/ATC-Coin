@@ -6,9 +6,12 @@
 
 #include "CryptoTypes.h"
 #include "JsonHelper.h"
+#include "json.hpp"
 
 #include <deque>
 #include <vector>
+
+using nlohmann::json;
 
 class SynchronizationStatus
 {

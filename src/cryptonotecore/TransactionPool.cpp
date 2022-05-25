@@ -12,9 +12,8 @@
 namespace CryptoNote
 {
     /* Is the left hand side preferred over the right hand side? */
-    bool TransactionPool::TransactionPriorityComparator::operator()(
-        const PendingTransactionInfo &lhs,
-        const PendingTransactionInfo &rhs) const
+    bool TransactionPool::TransactionPriorityComparator::
+        operator()(const PendingTransactionInfo &lhs, const PendingTransactionInfo &rhs) const
     {
         const CachedTransaction &left = lhs.cachedTransaction;
         const CachedTransaction &right = rhs.cachedTransaction;
@@ -30,9 +29,11 @@ namespace CryptoNote
         /* If the left hand side high bits are greater than the right hand
          * side high bits, or the high bits are equal and the left hand side
          * low bits are equal, then the lhs is larger. */
-        const bool rightHandSideMoreProfitable = lhs_hi > rhs_hi || (lhs_hi == rhs_hi && lhs_lo > rhs_lo);
+        const bool rightHandSideMoreProfitable
+            = lhs_hi > rhs_hi || (lhs_hi == rhs_hi && lhs_lo > rhs_lo);
 
-        const bool leftHandSideMoreProfitable = rhs_hi > lhs_hi || (lhs_hi == rhs_hi && rhs_lo > lhs_lo);
+        const bool leftHandSideMoreProfitable
+            = rhs_hi > lhs_hi || (lhs_hi == rhs_hi && rhs_lo > lhs_lo);
 
         /* First sort by profitability, fee per byte, higher fee per byte preferred */
         if (rightHandSideMoreProfitable)
@@ -59,15 +60,13 @@ namespace CryptoNote
 
         /* Figure out the ratio of inputs to outputs, ensuring we don't divide
          * by zero. */
-        const double leftInputOutputRatio =
-            left.getTransaction().outputs.size() == 0
-                ? std::numeric_limits<double>::max()
-                : left.getTransaction().inputs.size() / left.getTransaction().outputs.size();
+        const double leftInputOutputRatio = left.getTransaction().outputs.size() == 0
+            ? std::numeric_limits<double>::max()
+            : left.getTransaction().inputs.size() / left.getTransaction().outputs.size();
 
-        const double rightInputOutputRatio =
-            right.getTransaction().outputs.size() == 0
-                ? std::numeric_limits<double>::max()
-                : right.getTransaction().inputs.size() / right.getTransaction().outputs.size();
+        const double rightInputOutputRatio = right.getTransaction().outputs.size() == 0
+            ? std::numeric_limits<double>::max()
+            : right.getTransaction().inputs.size() / right.getTransaction().outputs.size();
 
         /* Next sort by ratio of inputs to outputs, higher ratio preferred
          * (Less outputs = more 'optimized' transaction). */

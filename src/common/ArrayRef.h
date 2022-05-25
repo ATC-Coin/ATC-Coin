@@ -37,7 +37,8 @@ namespace Common
         ArrayRef()
 #ifndef NDEBUG
             :
-            data(nullptr), size(INVALID) // In debug mode, fill in object with invalid state (undefined).
+            data(nullptr),
+            size(INVALID) // In debug mode, fill in object with invalid state (undefined).
 #endif
         {
         }

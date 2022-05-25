@@ -30,7 +30,6 @@ ApiConfig parseArguments(int argc, char **argv)
 
     std::string logFilePath;
 
-    // clang-format off
     options.add_options("Core")(
         "h,help", "Display this help message", cxxopts::value<bool>(help)->implicit_value("true"))
 
@@ -83,8 +82,7 @@ ApiConfig parseArguments(int argc, char **argv)
          "Specify the <password> to access the RPC server.",
          cxxopts::value<std::string>(config.rpcPassword),
          "<password>");
-    // clang-format on
-        
+
     try
     {
         const auto result = options.parse(argc, argv);

@@ -156,25 +156,6 @@ void WalletSynchronizer::mainLoop()
             while (!m_processedBlocks.empty_unsafe() && !m_shouldStop)
             {
                 const auto [block, ourInputs, arrivalIndex] = m_processedBlocks.top_unsafe();
-
-                /* if endScanHeight is set, stop syncing at endScanHeight and start syncing from top of the chain */
-                if (m_endScanHeight && getCurrentScanHeight() >= m_endScanHeight)
-                {
-                    /* run stop wallet synchronizer stopSyncThread set to false*/
-                    stop(false);
-
-                    /* Redefine m_blockDownloader to start from TOP height */
-                    m_startTimestamp = 0;
-                    m_blockDownloader =
-                        BlockDownloader(m_daemon, m_subWallets, m_daemon->networkBlockCount(), m_startTimestamp);
-
-                    /* Start wallet synchronizer but with startSyncThread set to false*/
-                    start(false);
-
-                    m_endScanHeight = std::nullopt;
-                    break;
-                }
-
                 completeBlockProcessing(block, ourInputs);
                 m_processedBlocks.pop_unsafe();
             }
@@ -583,23 +564,24 @@ std::vector<std::tuple<Crypto::PublicKey, WalletTypes::TransactionInput>> Wallet
                we'll let the subwallet do this since we need the private spend
                key. We use the key images to detect outgoing transactions,
                and we use the transaction inputs to make transactions ourself */
-            const auto [keyImage, privateEphemeral] =
-                m_subWallets->getTxInputKeyImage(derivedSpendKey, derivation, outputIndex);
+            const auto [keyImage, privateEphemeral]
+                = m_subWallets->getTxInputKeyImage(derivedSpendKey, derivation, outputIndex);
 
             const uint64_t spendHeight = 0;
 
-            const WalletTypes::TransactionInput input(
-                {keyImage,
-                 output.amount,
-                 blockHeight,
-                 rawTX.transactionPublicKey,
-                 outputIndex,
-                 output.globalOutputIndex,
-                 output.key,
-                 spendHeight,
-                 rawTX.unlockTime,
-                 rawTX.hash,
-                 privateEphemeral});
+            const WalletTypes::TransactionInput input({
+                keyImage,
+                output.amount,
+                blockHeight,
+                rawTX.transactionPublicKey,
+                outputIndex,
+                output.globalOutputIndex,
+                output.key,
+                spendHeight,
+                rawTX.unlockTime,
+                rawTX.hash,
+                privateEphemeral
+            });
 
             inputs.emplace_back(derivedSpendKey, input);
         }
@@ -681,7 +663,7 @@ void WalletSynchronizer::checkLockedTransactions()
 /* Launch the worker thread in the background. It's safest to do this in a
    seperate function, so everything in the constructor gets initialized,
    and if we do any inheritance, things don't go awry. */
-void WalletSynchronizer::start(const bool startSyncThread)
+void WalletSynchronizer::start()
 {
     Logger::logger.log("Starting sync process", Logger::DEBUG, {Logger::SYNC});
 
@@ -697,10 +679,7 @@ void WalletSynchronizer::start(const bool startSyncThread)
     m_blockProcessingQueue.start();
     m_processedBlocks.start();
 
-    if (startSyncThread)
-    {
-        m_syncThread = std::thread(&WalletSynchronizer::mainLoop, this);
-    }
+    m_syncThread = std::thread(&WalletSynchronizer::mainLoop, this);
 
     m_syncThreads.clear();
 
@@ -710,7 +689,7 @@ void WalletSynchronizer::start(const bool startSyncThread)
     }
 }
 
-void WalletSynchronizer::stop(const bool stopSyncThread)
+void WalletSynchronizer::stop()
 {
     Logger::logger.log("Stopping sync process", Logger::DEBUG, {Logger::SYNC});
 
@@ -728,14 +707,10 @@ void WalletSynchronizer::stop(const bool stopSyncThread)
     m_blockProcessingQueue.clear();
     m_processedBlocks.clear();
 
-
-    if (stopSyncThread)
+    /* Wait for the block downloader thread to finish (if applicable) */
+    if (m_syncThread.joinable())
     {
-        /* Wait for the block downloader thread to finish (if applicable) */
-        if (m_syncThread.joinable())
-        {
-            m_syncThread.join();
-        }
+        m_syncThread.join();
     }
 
     /* Wait for each child thread to finish */
@@ -759,27 +734,6 @@ void WalletSynchronizer::reset(uint64_t startHeight)
 
     /* Need to call start in your calling code - We don't call it here so
        you can schedule the start correctly */
-}
-
-
-void WalletSynchronizer::rewind(uint64_t startHeight)
-{
-    if (startHeight < m_startHeight)
-    {
-        m_startHeight = startHeight;
-        m_startTimestamp = 0;
-    }
-
-    /* Discard downloaded blocks and sync status */
-    m_blockDownloader = BlockDownloader(m_daemon, m_subWallets, m_startHeight, m_startTimestamp);
-
-    /* Need to call start in your calling code - We don't call it here so
-       you can schedule the start correctly */
-}
-
-void WalletSynchronizer::setEndScanHeight(uint64_t endHeight)
-{
-    m_endScanHeight = endHeight;
 }
 
 /* Remove any transactions at this height or above, they were on a forked

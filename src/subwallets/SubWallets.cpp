@@ -1,4 +1,4 @@
-// Copyright (c) 2018-2020, The TurtleCoin Developers
+// Copyright (c) 2018-2019, The TurtleCoin Developers
 //
 // Please see the included LICENSE file for more information.
 
@@ -8,9 +8,8 @@
 
 #include <config/CryptoNoteConfig.h>
 #include <ctime>
-#include <logger/Logger.h>
-#include <map>
 #include <mutex>
+#include <logger/Logger.h>
 #include <random>
 #include <utilities/Addresses.h>
 #include <utilities/Utilities.h>
@@ -27,7 +26,8 @@ SubWallets::SubWallets(
     const uint64_t scanHeight,
     const bool newWallet):
 
-    m_privateViewKey(privateViewKey), m_isViewWallet(false)
+    m_privateViewKey(privateViewKey),
+    m_isViewWallet(false)
 {
     Crypto::PublicKey publicSpendKey;
 
@@ -50,7 +50,8 @@ SubWallets::SubWallets(
     const uint64_t scanHeight,
     const bool newWallet):
 
-    m_privateViewKey(privateViewKey), m_isViewWallet(true)
+    m_privateViewKey(privateViewKey),
+    m_isViewWallet(true)
 {
     const auto [publicSpendKey, publicViewKey] = Utilities::addressToKeys(address);
 
@@ -92,8 +93,7 @@ std::tuple<Error, std::string, Crypto::SecretKey, uint64_t> SubWallets::addSubWa
     std::scoped_lock lock(m_mutex);
 
     /* Generate a deterministic secret spend key for the next deterministic wallet */
-    const auto [newPrivateKey, newPublicKey] =
-        Crypto::generate_deterministic_subwallet_keys(primarySpendKey, ++m_subWalletIndexCounter);
+    const auto [newPrivateKey, newPublicKey] = Crypto::generate_deterministic_subwallet_keys(primarySpendKey, ++m_subWalletIndexCounter);
 
     const std::string address = Utilities::privateKeysToAddress(newPrivateKey, m_privateViewKey);
 
@@ -130,11 +130,6 @@ std::tuple<Error, std::string>
 
     Crypto::secret_key_to_public_key(privateSpendKey, publicSpendKey);
 
-    if (m_subWallets.find(publicSpendKey) != m_subWallets.end())
-    {
-        return {SUBWALLET_ALREADY_EXISTS, std::string()};
-    }
-
     uint64_t timestamp = 0;
 
     const std::string address = Utilities::privateKeysToAddress(privateSpendKey, m_privateViewKey);
@@ -154,7 +149,8 @@ std::tuple<Error, std::string>
     return {SUCCESS, address};
 }
 
-std::tuple<Error, std::string> SubWallets::importSubWallet(const uint64_t walletIndex, const uint64_t scanHeight)
+std::tuple<Error, std::string>
+    SubWallets::importSubWallet(const uint64_t walletIndex, const uint64_t scanHeight)
 {
     /* Can't add a private spend key to a view wallet */
     if (m_isViewWallet)
@@ -165,13 +161,7 @@ std::tuple<Error, std::string> SubWallets::importSubWallet(const uint64_t wallet
     Crypto::SecretKey primarySpendKey = getPrimaryPrivateSpendKey();
 
     /* Generate a deterministic secret spend key using the given wallet index */
-    const auto [newPrivateKey, newPublicKey] =
-        Crypto::generate_deterministic_subwallet_keys(primarySpendKey, walletIndex);
-
-    if (m_subWallets.find(newPublicKey) != m_subWallets.end())
-    {
-        return {SUBWALLET_ALREADY_EXISTS, std::string()};
-    }
+    const auto [newPrivateKey, newPublicKey] = Crypto::generate_deterministic_subwallet_keys(primarySpendKey, walletIndex);
 
     const auto [status, address] = importSubWallet(newPrivateKey, scanHeight);
 
@@ -346,7 +336,11 @@ void SubWallets::addUnconfirmedTransaction(const WalletTypes::Transaction tx)
 
         stream << "Unconfirmed transaction " << tx.hash << " already exists in wallet. Ignoring.";
 
-        Logger::logger.log(stream.str(), Logger::WARNING, {Logger::SYNC});
+        Logger::logger.log(
+            stream.str(),
+            Logger::WARNING,
+            { Logger::SYNC }
+        );
 
         return;
     }
@@ -383,7 +377,11 @@ void SubWallets::addTransaction(const WalletTypes::Transaction tx)
 
         stream << "Transaction " << tx.hash << " already exists in wallet. Ignoring.";
 
-        Logger::logger.log(stream.str(), Logger::WARNING, {Logger::SYNC});
+        Logger::logger.log(
+            stream.str(),
+            Logger::WARNING,
+            { Logger::SYNC }
+        );
 
         return;
     }
@@ -448,7 +446,9 @@ std::tuple<bool, Crypto::PublicKey> SubWallets::getKeyImageOwner(const Crypto::K
 }
 
 /* Determine if the input given is available for spending */
-bool SubWallets::haveSpendableInput(const WalletTypes::TransactionInput &input, const uint64_t height) const
+bool SubWallets::haveSpendableInput(
+    const WalletTypes::TransactionInput& input,
+    const uint64_t height) const
 {
     for (const auto &[pubKey, subWallet] : m_subWallets)
     {
@@ -502,7 +502,8 @@ std::vector<WalletTypes::TxInputAndOwner> SubWallets::getSpendableTransactionInp
     }
 
     /* Sort inputs by their amounts, largest first */
-    std::sort(availableInputs.begin(), availableInputs.end(), [](const auto a, const auto b) {
+    std::sort(availableInputs.begin(), availableInputs.end(), [](const auto a, const auto b)
+    {
         return a.input.amount > b.input.amount;
     });
 
@@ -830,8 +831,7 @@ Crypto::SecretKey SubWallets::getPrivateViewKey() const
     return m_privateViewKey;
 }
 
-std::tuple<Error, Crypto::SecretKey, uint64_t>
-    SubWallets::getPrivateSpendKey(const Crypto::PublicKey publicSpendKey) const
+std::tuple<Error, Crypto::SecretKey, uint64_t> SubWallets::getPrivateSpendKey(const Crypto::PublicKey publicSpendKey) const
 {
     throwIfViewWallet();
 
@@ -887,13 +887,6 @@ void SubWallets::reset(const uint64_t scanHeight)
     {
         subWallet.reset(scanHeight);
     }
-}
-
-
-void SubWallets::rewind(const uint64_t scanHeight)
-{
-    m_lockedTransactions.clear();
-    removeForkedTransactions(scanHeight);
 }
 
 std::vector<Crypto::SecretKey> SubWallets::getPrivateSpendKeys() const
@@ -1017,7 +1010,7 @@ void SubWallets::fromJSON(const JSONObject &j)
     for (const auto &x : getArrayFromJSON(j, "publicSpendKeys"))
     {
         Crypto::PublicKey key;
-        key.fromString(getStringFromJSON(x));
+        key.fromString(getStringFromJSONString(x));
         m_publicSpendKeys.push_back(key);
     }
 

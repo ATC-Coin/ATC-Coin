@@ -20,7 +20,8 @@ namespace
 }
 
 LevelDBWrapper::LevelDBWrapper(std::shared_ptr<Logging::ILogger> logger):
-    logger(logger, "LevelDBWrapper"), state(NOT_INITIALIZED)
+    logger(logger, "LevelDBWrapper"),
+    state(NOT_INITIALIZED)
 {
 }
 
@@ -29,7 +30,7 @@ LevelDBWrapper::~LevelDBWrapper() {}
 void LevelDBWrapper::init(const DataBaseConfig &config)
 {
     // Set up database connection information and open database
-    leveldb::DB *dbPtr;
+    leveldb::DB* dbPtr;
 
     leveldb::Options dbOptions;
 
@@ -49,7 +50,9 @@ void LevelDBWrapper::init(const DataBaseConfig &config)
     // worth switching to kNoCompression.  Even if the input data is
     // incompressible, the kSnappyCompression implementation will
     // efficiently detect that and will switch to uncompressed mode.
-    dbOptions.compression = config.compressionEnabled ? leveldb::kSnappyCompression : leveldb::kNoCompression;
+    dbOptions.compression = config.compressionEnabled
+        ? leveldb::kSnappyCompression
+        : leveldb::kNoCompression;
 
     // Leveldb will write up to this amount of bytes to a file before
     // switching to a new one.
@@ -69,7 +72,7 @@ void LevelDBWrapper::init(const DataBaseConfig &config)
     // so you may wish to adjust this parameter to control memory usage.
     // Also, a larger write buffer will result in a longer recovery time
     // the next time the database is opened.
-    dbOptions.write_buffer_size = static_cast<size_t>(config.writeBufferSize);
+    dbOptions.write_buffer_size =  static_cast<size_t>(config.writeBufferSize);
 
     // Number of open files that can be used by the DB.  You may need to
     // increase this if your database has a large working set (budget
@@ -127,7 +130,7 @@ void LevelDBWrapper::shutdown()
     }
 
     logger(INFO) << "Closing DB.";
-
+	
     db.reset();
 
     state.store(NOT_INITIALIZED);

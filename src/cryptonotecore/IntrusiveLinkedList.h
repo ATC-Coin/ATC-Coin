@@ -191,15 +191,15 @@ namespace CryptoNote
     template<class Value> IntrusiveLinkedList<Value>::iterator::iterator(Value *value): currentElement(value) {}
 
     template<class Value>
-    bool IntrusiveLinkedList<Value>::iterator::operator!=(
-        const typename IntrusiveLinkedList<Value>::iterator &other) const
+    bool IntrusiveLinkedList<Value>::iterator::
+        operator!=(const typename IntrusiveLinkedList<Value>::iterator &other) const
     {
         return currentElement != other.currentElement;
     }
 
     template<class Value>
-    bool IntrusiveLinkedList<Value>::iterator::operator==(
-        const typename IntrusiveLinkedList<Value>::iterator &other) const
+    bool IntrusiveLinkedList<Value>::iterator::
+        operator==(const typename IntrusiveLinkedList<Value>::iterator &other) const
     {
         return currentElement == other.currentElement;
     }

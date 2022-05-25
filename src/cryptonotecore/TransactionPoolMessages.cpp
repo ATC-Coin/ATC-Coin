@@ -8,12 +8,14 @@
 namespace CryptoNote
 {
     TransactionPoolMessage::TransactionPoolMessage(const AddTransaction &at):
-        type(TransactionMessageType::AddTransactionType), addTransaction(at)
+        type(TransactionMessageType::AddTransactionType),
+        addTransaction(at)
     {
     }
 
     TransactionPoolMessage::TransactionPoolMessage(const DeleteTransaction &dt):
-        type(TransactionMessageType::DeleteTransactionType), deleteTransaction(dt)
+        type(TransactionMessageType::DeleteTransactionType),
+        deleteTransaction(dt)
     {
     }
 

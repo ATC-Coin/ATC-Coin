@@ -91,19 +91,18 @@ STATIC INLINE void xor64(uint64_t *a, const uint64_t b)
  */
 static void aes_expand_key(const uint8_t *key, uint8_t *expandedKey)
 {
-    static const int rcon[] = {
-        0x01,
-        0x01,
-        0x01,
-        0x01,
-        0x0c0f0e0d,
-        0x0c0f0e0d,
-        0x0c0f0e0d,
-        0x0c0f0e0d, // rotate-n-splat
-        0x1b,
-        0x1b,
-        0x1b,
-        0x1b};
+    static const int rcon[] = {0x01,
+                               0x01,
+                               0x01,
+                               0x01,
+                               0x0c0f0e0d,
+                               0x0c0f0e0d,
+                               0x0c0f0e0d,
+                               0x0c0f0e0d, // rotate-n-splat
+                               0x1b,
+                               0x1b,
+                               0x1b,
+                               0x1b};
 
     __asm__("	eor	v0.16b,v0.16b,v0.16b\n"
             "	ld1	{v3.16b},[%0],#16\n"
@@ -385,8 +384,7 @@ void mul(const uint8_t *ca, const uint8_t *cb, uint8_t *cres)
     const SHORT *bb = (SHORT *)cb;
     SHORT *res = (SHORT *)cres;
 
-    union
-    {
+    union {
         SHORT tmp[8];
         LONG ltmp[4];
     } t;

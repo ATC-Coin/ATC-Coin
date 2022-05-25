@@ -6,6 +6,42 @@
 
 #include <config/CryptoNoteConfig.h>
 #include <serialization/ISerializer.h>
+#include <wallet/WalletGreen.h>
+
+struct WalletInfo
+{
+    WalletInfo(
+        std::string walletFileName,
+        std::string walletPass,
+        std::string walletAddress,
+        bool viewWallet,
+        CryptoNote::WalletGreen &wallet):
+        walletFileName(walletFileName),
+        walletPass(walletPass),
+        walletAddress(walletAddress),
+        viewWallet(viewWallet),
+        wallet(wallet)
+    {
+    }
+
+    /* How many transactions do we know about */
+    size_t knownTransactionCount = 0;
+
+    /* The wallet file name */
+    std::string walletFileName;
+
+    /* The wallet password */
+    std::string walletPass;
+
+    /* The wallets primary address */
+    std::string walletAddress;
+
+    /* Is the wallet a view only wallet */
+    bool viewWallet;
+
+    /* The walletgreen wallet container */
+    CryptoNote::WalletGreen &wallet;
+};
 
 struct Config
 {
@@ -14,9 +50,6 @@ struct Config
 
     /* Was the wallet pass specified on CLI */
     bool passGiven = false;
-
-    /* Was the reset flag specified on CLI */
-    bool resetGiven = false;
 
     /* Should we log walletd logs to a file */
     bool debug = false;
@@ -32,9 +65,6 @@ struct Config
 
     /* The wallet password */
     std::string walletPass = "";
-
-    /* The reset startHeight */
-    uint64_t resetFromHeight = 0;
 };
 
 struct AddressBookEntry
@@ -45,7 +75,10 @@ struct AddressBookEntry
     AddressBookEntry(std::string friendlyName): friendlyName(friendlyName) {}
 
     AddressBookEntry(std::string friendlyName, std::string address, std::string paymentID, bool integratedAddress):
-        friendlyName(friendlyName), address(address), paymentID(paymentID), integratedAddress(integratedAddress)
+        friendlyName(friendlyName),
+        address(address),
+        paymentID(paymentID),
+        integratedAddress(integratedAddress)
     {
     }
 

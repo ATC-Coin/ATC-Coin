@@ -18,8 +18,31 @@
 #include <stdio.h>
 #include <limits.h>
 
-#define ARGON2_PUBLIC
-#define ARGON2_LOCAL
+/* Symbols visibility control */
+#if defined(_WIN32) || defined(__CYGWIN__)
+  #if defined(A2_VISCTL)
+    #if defined(_MSC_VER)
+      #define ARGON2_PUBLIC __declspec(dllexport)
+    #else
+      #define ARGON2_PUBLIC __attribute__ ((dllexport))
+    #endif
+  #else
+    #if defined(_MSC_VER)
+      #define ARGON2_PUBLIC __declspec(dllimport)
+    #else
+      #define ARGON2_PUBLIC /*__attribute__ ((dllimport))*/
+    #endif
+  #endif
+  #define ARGON2_LOCAL
+#else
+  #if defined(A2_VISCTL)
+    #define ARGON2_PUBLIC __attribute__ ((visibility ("default")))
+    #define ARGON2_LOCAL  __attribute__ ((visibility ("hidden")))
+  #else
+    #define ARGON2_PUBLIC
+    #define ARGON2_LOCAL
+  #endif
+#endif
 
 #if defined(__cplusplus)
 extern "C" {

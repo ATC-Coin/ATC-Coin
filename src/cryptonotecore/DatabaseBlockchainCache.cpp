@@ -355,7 +355,9 @@ namespace CryptoNote
                 std::function<PackedOutIndex(IBlockchainCache::Amount amount, uint32_t globalOutputIndex)> retriever_,
                 IBlockchainCache::Amount amount_,
                 uint32_t globalOutputIndex_):
-                retriever(retriever_), amount(amount_), globalOutputIndex(globalOutputIndex_)
+                retriever(retriever_),
+                amount(amount_),
+                globalOutputIndex(globalOutputIndex_)
             {
             }
 
@@ -1332,7 +1334,6 @@ namespace CryptoNote
         upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_4, currency.upgradeHeight(BLOCK_MAJOR_VERSION_4));
         upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_5, currency.upgradeHeight(BLOCK_MAJOR_VERSION_5));
         upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_6, currency.upgradeHeight(BLOCK_MAJOR_VERSION_6));
-        upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_7, currency.upgradeHeight(BLOCK_MAJOR_VERSION_7));
         return upgradeManager.getBlockMajorVersion(height);
     }
 
@@ -2221,13 +2222,12 @@ namespace CryptoNote
 
         BlockchainWriteBatch batch;
 
-        CachedBlockInfo blockInfo {
-            genesisBlock.getBlockHash(),
-            genesisBlock.getBlock().timestamp,
-            1,
-            minerReward,
-            1,
-            uint32_t(baseTransactionSize)};
+        CachedBlockInfo blockInfo {genesisBlock.getBlockHash(),
+                                   genesisBlock.getBlock().timestamp,
+                                   1,
+                                   minerReward,
+                                   1,
+                                   uint32_t(baseTransactionSize)};
 
         auto baseTransaction = genesisBlock.getBlock().baseTransaction;
         auto cachedBaseTransaction = CachedTransaction {std::move(baseTransaction)};

@@ -22,24 +22,23 @@ namespace Logging
         bool changedColor = false;
         std::string color = "";
 
-        static std::unordered_map<std::string, Color> colorMapping = {
-            {BLUE, Color::Blue},
-            {GREEN, Color::Green},
-            {RED, Color::Red},
-            {YELLOW, Color::Yellow},
-            {WHITE, Color::White},
-            {CYAN, Color::Cyan},
-            {MAGENTA, Color::Magenta},
+        static std::unordered_map<std::string, Color> colorMapping = {{BLUE, Color::Blue},
+                                                                      {GREEN, Color::Green},
+                                                                      {RED, Color::Red},
+                                                                      {YELLOW, Color::Yellow},
+                                                                      {WHITE, Color::White},
+                                                                      {CYAN, Color::Cyan},
+                                                                      {MAGENTA, Color::Magenta},
 
-            {BRIGHT_BLUE, Color::BrightBlue},
-            {BRIGHT_GREEN, Color::BrightGreen},
-            {BRIGHT_RED, Color::BrightRed},
-            {BRIGHT_YELLOW, Color::BrightYellow},
-            {BRIGHT_WHITE, Color::BrightWhite},
-            {BRIGHT_CYAN, Color::BrightCyan},
-            {BRIGHT_MAGENTA, Color::BrightMagenta},
+                                                                      {BRIGHT_BLUE, Color::BrightBlue},
+                                                                      {BRIGHT_GREEN, Color::BrightGreen},
+                                                                      {BRIGHT_RED, Color::BrightRed},
+                                                                      {BRIGHT_YELLOW, Color::BrightYellow},
+                                                                      {BRIGHT_WHITE, Color::BrightWhite},
+                                                                      {BRIGHT_CYAN, Color::BrightCyan},
+                                                                      {BRIGHT_MAGENTA, Color::BrightMagenta},
 
-            {DEFAULT, Color::Default}};
+                                                                      {DEFAULT, Color::Default}};
 
         for (size_t charPos = 0; charPos < message.size(); ++charPos)
         {

@@ -4,9 +4,10 @@
 
 #pragma once
 
+#include <optional>
+
 #include <config/CryptoNoteConfig.h>
 #include <logger/Logger.h>
-#include <optional>
 
 struct ApiConfig
 {

@@ -49,12 +49,18 @@ namespace CryptoNote
         };
 
         P2pMessage(Type type, uint32_t command, const BinaryArray &buffer, int32_t returnCode = 0):
-            type(type), command(command), buffer(buffer), returnCode(returnCode)
+            type(type),
+            command(command),
+            buffer(buffer),
+            returnCode(returnCode)
         {
         }
 
         P2pMessage(P2pMessage &&msg):
-            type(msg.type), command(msg.command), buffer(std::move(msg.buffer)), returnCode(msg.returnCode)
+            type(msg.type),
+            command(msg.command),
+            buffer(std::move(msg.buffer)),
+            returnCode(msg.returnCode)
         {
         }
 

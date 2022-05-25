@@ -81,7 +81,7 @@ namespace Common
             throw std::runtime_error("fromHex: invalid buffer size");
         }
 
-        for (uint64_t i = 0; i < (text.size() >> 1); ++i)
+        for (uint64_t i = 0; i<text.size()>> 1; ++i)
         {
             static_cast<uint8_t *>(data)[i] = fromHex(text[i << 1]) << 4 | fromHex(text[(i << 1) + 1]);
         }
@@ -101,7 +101,7 @@ namespace Common
             return false;
         }
 
-        for (uint64_t i = 0; i < (text.size() >> 1); ++i)
+        for (uint64_t i = 0; i<text.size()>> 1; ++i)
         {
             uint8_t value1;
             if (!fromHex(text[i << 1], value1))
@@ -145,7 +145,7 @@ namespace Common
             return false;
         }
 
-        for (uint64_t i = 0; i < (text.size() >> 1); ++i)
+        for (uint64_t i = 0; i<text.size()>> 1; ++i)
         {
             uint8_t value1;
             if (!fromHex(text[i << 1], value1))

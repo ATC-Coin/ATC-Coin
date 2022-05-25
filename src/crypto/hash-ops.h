@@ -38,8 +38,7 @@ static inline void place_length(uint8_t *buffer, size_t bufsize, size_t length)
 }
 
 #pragma pack(push, 1)
-union hash_state
-{
+union hash_state {
     uint8_t b[200];
     uint64_t w[25];
 };

@@ -52,9 +52,6 @@ class WalletSynchronizer
     /* Constructors */
     //////////////////
 
-
-    std::optional<uint64_t> endScanHeight;
-
     /* Default constructor */
     WalletSynchronizer();
 
@@ -86,9 +83,9 @@ class WalletSynchronizer
     /* Public member functions */
     /////////////////////////////
 
-    void start(const bool startSyncThread = true);
+    void start();
 
-    void stop(const bool stopSyncThread = true);
+    void stop();
 
     /* Converts the class to a json object */
     void toJSON(rapidjson::Writer<rapidjson::StringBuffer> &writer) const;
@@ -102,12 +99,12 @@ class WalletSynchronizer
         unsigned int threadCount);
 
     void reset(uint64_t startHeight);
-    void rewind(uint64_t startHeight);
-    void setEndScanHeight(uint64_t endHeight);
 
     uint64_t getCurrentScanHeight() const;
 
     void swapNode(const std::shared_ptr<Nigel> daemon);
+
+    void setSyncStart(const uint64_t startTimestamp, const uint64_t startHeight);
 
     void setSubWallets(const std::shared_ptr<SubWallets> subWallets);
 
@@ -165,9 +162,6 @@ class WalletSynchronizer
 
     /* The height to start downloading block data from */
     uint64_t m_startHeight;
-
-    /* The height to end downloading block data from */
-    std::optional<uint64_t> m_endScanHeight;
 
     /* The private view key we use for decrypting transactions */
     Crypto::SecretKey m_privateViewKey;

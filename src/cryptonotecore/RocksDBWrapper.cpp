@@ -20,7 +20,8 @@ namespace
 }
 
 RocksDBWrapper::RocksDBWrapper(std::shared_ptr<Logging::ILogger> logger):
-    logger(logger, "RocksDBWrapper"), state(NOT_INITIALIZED)
+    logger(logger, "RocksDBWrapper"),
+    state(NOT_INITIALIZED)
 {
 }
 
@@ -262,7 +263,9 @@ rocksdb::Options RocksDBWrapper::getDBOptions(const DataBaseConfig &config)
 
     fOptions.compression_per_level.resize(fOptions.num_levels);
 
-    const auto compressionLevel = config.compressionEnabled ? rocksdb::kZSTD : rocksdb::kNoCompression;
+    const auto compressionLevel = config.compressionEnabled
+        ? rocksdb::kZSTD
+        : rocksdb::kNoCompression;
 
     for (int i = 0; i < fOptions.num_levels; ++i)
     {

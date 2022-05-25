@@ -396,7 +396,7 @@ namespace Crypto
     {
         crypto_ops::hash_data_to_ec(data, len, key);
     }
-
+    
     inline void scReduce32(EllipticCurveScalar &data)
     {
         crypto_ops::scReduce32(data);

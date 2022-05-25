@@ -11,8 +11,8 @@
 #include <fstream>
 #include <iostream>
 #include <utilities/ColouredMsg.h>
-#include <utilities/PasswordContainer.h>
 #include <utilities/String.h>
+#include <utilities/PasswordContainer.h>
 
 namespace ZedUtilities
 {
@@ -31,4 +31,51 @@ namespace ZedUtilities
             std::cout << WarningMsg("Incorrect password! Try again.") << std::endl;
         }
     }
+
+    uint64_t getScanHeight()
+    {
+        std::cout << "\n";
+
+        while (true)
+        {
+            std::cout << InformationMsg("What height would you like to begin ")
+                      << InformationMsg("scanning your wallet from?") << "\n\n"
+                      << "This can greatly speed up the initial wallet "
+                      << "scanning process."
+                      << "\n\n"
+                      << "If you do not know the exact height, "
+                      << "err on the side of caution so transactions do not "
+                      << "get missed."
+                      << "\n\n"
+                      << InformationMsg("Hit enter for the sub-optimal default ") << InformationMsg("of zero: ");
+
+            std::string stringHeight;
+
+            std::getline(std::cin, stringHeight);
+
+            /* Remove commas so user can enter height as e.g. 200,000 */
+            Utilities::removeCharFromString(stringHeight, ',');
+
+            if (stringHeight == "")
+            {
+                return 0;
+            }
+
+            try
+            {
+                return std::stoull(stringHeight);
+            }
+            catch (const std::out_of_range &)
+            {
+                std::cout << WarningMsg("Input is too large or too small!");
+            }
+            catch (const std::invalid_argument &)
+            {
+                std::cout << WarningMsg("Failed to parse height - input is not ") << WarningMsg("a number!")
+                          << std::endl
+                          << std::endl;
+            }
+        }
+    }
+
 } // namespace ZedUtilities

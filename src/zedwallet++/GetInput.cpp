@@ -328,53 +328,6 @@ std::tuple<std::string, uint16_t, bool> getDaemonAddress()
     }
 }
 
-uint64_t getHeight(const std::string msg)
-{
-    std::cout << "\n";
-
-    while (true)
-    {
-        std::cout << InformationMsg(msg);
-
-        std::string stringHeight;
-
-        std::getline(std::cin, stringHeight);
-
-        /* Remove commas so user can enter height as e.g. 200,000 */
-        Utilities::removeCharFromString(stringHeight, ',');
-
-        if (stringHeight == "")
-        {
-            return 0;
-        }
-
-        try
-        {
-            return std::stoull(stringHeight);
-        }
-        catch (const std::out_of_range &)
-        {
-            std::cout << WarningMsg("Input is too large or too small!");
-        }
-        catch (const std::invalid_argument &)
-        {
-            std::cout << WarningMsg("Failed to parse height - input is not ") << WarningMsg("a number!") << std::endl
-                      << std::endl;
-        }
-    }
-}
-
-uint64_t getHeight()
-{
-    const std::string msg =
-        "What height would you like to begin scanning your wallet from?\n\n"
-        "This can greatly speed up the initial wallet scanning process.\n\n"
-        "If you do not know the exact height, err on the side of caution so transactions do not get missed.\n\n"
-        "Hit enter for the sub-optimal default of zero: ";
-
-    return getHeight(msg);
-}
-
 /* Template instantations that we are going to use - this allows us to have
    the template implementation in the .cpp file. */
 template std::string getInput(const std::vector<Command> &availableCommands, std::string prompt);

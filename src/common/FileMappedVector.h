@@ -12,9 +12,9 @@
 #include <common/FileSystemShim.h>
 #include <crypto/random.h>
 #include <cstdint>
-#include <iostream>
-#include <sstream>
 #include <string>
+#include <sstream>
+#include <iostream>
 
 namespace Common
 {
@@ -55,7 +55,8 @@ namespace Common
             const_iterator(): m_fileMappedVector(nullptr) {}
 
             const_iterator(const FileMappedVector *fileMappedVector, uint64_t index):
-                m_fileMappedVector(fileMappedVector), m_index(index)
+                m_fileMappedVector(fileMappedVector),
+                m_index(index)
             {
             }
 
@@ -949,7 +950,8 @@ namespace Common
 
         std::stringstream stream;
 
-        stream << std::hex << Random::randomValue<uint64_t>() << Random::randomValue<uint64_t>();
+        stream << std::hex << Random::randomValue<uint64_t>()
+                           << Random::randomValue<uint64_t>();
 
         fs::path tmpPath = fs::path(m_path).parent_path() / stream.str();
 

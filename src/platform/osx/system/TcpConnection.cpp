@@ -263,7 +263,10 @@ namespace System
     }
 
     TcpConnection::TcpConnection(Dispatcher &dispatcher, int socket):
-        dispatcher(&dispatcher), connection(socket), readContext(nullptr), writeContext(nullptr)
+        dispatcher(&dispatcher),
+        connection(socket),
+        readContext(nullptr),
+        writeContext(nullptr)
     {
         int val = 1;
         if (setsockopt(connection, SOL_SOCKET, SO_NOSIGPIPE, (void *)&val, sizeof val) == -1)

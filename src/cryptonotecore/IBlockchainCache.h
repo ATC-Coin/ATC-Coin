@@ -27,8 +27,7 @@ namespace CryptoNote
         OUTPUT_LOCKED
     };
 
-    union PackedOutIndex
-    {
+    union PackedOutIndex {
         struct
         {
             uint32_t blockIndex;

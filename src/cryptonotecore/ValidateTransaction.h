@@ -7,12 +7,13 @@
 
 #pragma once
 
+#include <system_error>
+
 #include <CryptoNote.h>
 #include <cryptonotecore/CachedTransaction.h>
 #include <cryptonotecore/Checkpoints.h>
 #include <cryptonotecore/Currency.h>
 #include <cryptonotecore/IBlockchainCache.h>
-#include <system_error>
 #include <utilities/ThreadPool.h>
 
 struct TransactionValidationResult
@@ -35,77 +36,77 @@ struct TransactionValidationResult
 
 class ValidateTransaction
 {
-  public:
-    /////////////////
-    /* CONSTRUCTOR */
-    /////////////////
-    ValidateTransaction(
-        const CryptoNote::CachedTransaction &cachedTransaction,
-        CryptoNote::TransactionValidatorState &state,
-        CryptoNote::IBlockchainCache *cache,
-        const CryptoNote::Currency &currency,
-        const CryptoNote::Checkpoints &checkpoints,
-        Utilities::ThreadPool<bool> &threadPool,
-        const uint64_t blockHeight,
-        const uint64_t blockSizeMedian,
-        const bool isPoolTransaction);
+    public:
+        /////////////////
+        /* CONSTRUCTOR */
+        /////////////////
+        ValidateTransaction(
+            const CryptoNote::CachedTransaction &cachedTransaction,
+            CryptoNote::TransactionValidatorState &state,
+            CryptoNote::IBlockchainCache *cache,
+            const CryptoNote::Currency &currency,
+            const CryptoNote::Checkpoints &checkpoints,
+            Utilities::ThreadPool<bool> &threadPool,
+            const uint64_t blockHeight,
+            const uint64_t blockSizeMedian,
+            const bool isPoolTransaction);
 
-    /////////////////////////////
-    /* PUBLIC MEMBER FUNCTIONS */
-    /////////////////////////////
-    TransactionValidationResult validate();
+        /////////////////////////////
+        /* PUBLIC MEMBER FUNCTIONS */
+        /////////////////////////////
+        TransactionValidationResult validate();
 
-    TransactionValidationResult revalidateAfterHeightChange();
+        TransactionValidationResult revalidateAfterHeightChange();
 
-  private:
-    //////////////////////////////
-    /* PRIVATE MEMBER FUNCTIONS */
-    //////////////////////////////
-    bool validateTransactionSize();
+    private:
+        //////////////////////////////
+        /* PRIVATE MEMBER FUNCTIONS */
+        //////////////////////////////
+        bool validateTransactionSize();
 
-    bool validateTransactionInputs();
+        bool validateTransactionInputs();
 
-    bool validateTransactionOutputs();
+        bool validateTransactionOutputs();
 
-    bool validateTransactionFee();
+        bool validateTransactionFee();
 
-    bool validateTransactionExtra();
+        bool validateTransactionExtra();
 
-    bool validateInputOutputRatio();
+        bool validateInputOutputRatio();
 
-    bool validateTransactionMixin();
+        bool validateTransactionMixin();
 
-    bool validateTransactionInputsExpensive();
+        bool validateTransactionInputsExpensive();
 
-    void setTransactionValidationResult(const std::error_code &error_code, const std::string &error_message = "");
+        void setTransactionValidationResult(const std::error_code &error_code, const std::string &error_message = "");
 
-    /////////////////////////
-    /* PRIVATE MEMBER VARS */
-    /////////////////////////
-    const CryptoNote::Transaction m_transaction;
+        /////////////////////////
+        /* PRIVATE MEMBER VARS */
+        /////////////////////////
+        const CryptoNote::Transaction m_transaction;
 
-    const CryptoNote::CachedTransaction &m_cachedTransaction;
+        const CryptoNote::CachedTransaction &m_cachedTransaction;
 
-    CryptoNote::TransactionValidatorState &m_validatorState;
+        CryptoNote::TransactionValidatorState &m_validatorState;
 
-    const CryptoNote::IBlockchainCache *m_blockchainCache;
+        const CryptoNote::IBlockchainCache *m_blockchainCache;
 
-    const CryptoNote::Currency &m_currency;
+        const CryptoNote::Currency &m_currency;
 
-    const CryptoNote::Checkpoints &m_checkpoints;
+        const CryptoNote::Checkpoints &m_checkpoints;
 
-    const uint64_t m_blockHeight;
+        const uint64_t m_blockHeight;
 
-    const uint64_t m_blockSizeMedian;
+        const uint64_t m_blockSizeMedian;
 
-    const bool m_isPoolTransaction;
+        const bool m_isPoolTransaction;
 
-    TransactionValidationResult m_validationResult;
+        TransactionValidationResult m_validationResult;
 
-    uint64_t m_sumOfOutputs = 0;
-    uint64_t m_sumOfInputs = 0;
+        uint64_t m_sumOfOutputs = 0;
+        uint64_t m_sumOfInputs = 0;
 
-    Utilities::ThreadPool<bool> &m_threadPool;
+        Utilities::ThreadPool<bool> &m_threadPool;
 
-    std::mutex m_mutex;
+        std::mutex m_mutex;
 };

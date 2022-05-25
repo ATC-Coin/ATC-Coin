@@ -42,8 +42,7 @@ namespace CryptoNote
         return transactionPool->getTransaction(hash);
     }
 
-    const std::optional<CachedTransaction>
-        TransactionPoolCleanWrapper::tryGetTransaction(const Crypto::Hash &hash) const
+    const std::optional<CachedTransaction> TransactionPoolCleanWrapper::tryGetTransaction(const Crypto::Hash &hash) const
     {
         return transactionPool->tryGetTransaction(hash);
     }

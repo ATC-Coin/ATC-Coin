@@ -36,7 +36,7 @@ void transfer(const std::shared_ptr<WalletBackend> walletBackend, const bool sen
        safely */
     const auto [nodeFee, nodeAddress] = walletBackend->getNodeFee();
 
-
+    
     std::string address =
         getAddress("What address do you want to transfer to?: ", integratedAddressesAllowed, cancelAllowed);
 
@@ -70,7 +70,7 @@ void transfer(const std::shared_ptr<WalletBackend> walletBackend, const bool sen
      * code, since we need to take into account fee per byte. For now, we'll
      * just set the amount to all balance minus nodeFee. */
     uint64_t amount = unlockedBalance - nodeFee;
-
+    
     if (!sendAll)
     {
         bool success;
@@ -137,7 +137,11 @@ void sendTransaction(
     WalletTypes::PreparedTransactionInfo preparedTransaction;
 
     std::tie(error, std::ignore, preparedTransaction) = walletBackend->sendTransactionBasic(
-        address, amount, paymentID, sendAll, false /* Don't relay to network */
+        address,
+        amount,
+        paymentID,
+        sendAll,
+        false /* Don't relay to network */
     );
 
     if (error == NOT_ENOUGH_BALANCE)
@@ -146,8 +150,7 @@ void sendTransaction(
 
         std::cout << WarningMsg("\nYou don't have enough funds to cover "
                                 "this transaction!\n\n")
-                  << "Funds needed: "
-                  << InformationMsg(Utilities::formatAmount(actualAmount + preparedTransaction.fee + nodeFee))
+                  << "Funds needed: " << InformationMsg(Utilities::formatAmount(actualAmount + preparedTransaction.fee + nodeFee))
                   << " (Includes a network fee of " << InformationMsg(Utilities::formatAmount(preparedTransaction.fee))
                   << " and a node fee of " << InformationMsg(Utilities::formatAmount(nodeFee))
                   << ")\nFunds available: " << SuccessMsg(Utilities::formatAmount(unlockedBalance)) << "\n\n";
@@ -170,15 +173,20 @@ void sendTransaction(
 
         /* Resend the transaction */
         std::tie(error, std::ignore, preparedTransaction) = walletBackend->sendTransactionBasic(
-            address, amount, paymentID, sendAll, false /* Don't relay to network */
+            address,
+            amount,
+            paymentID,
+            sendAll,
+            false /* Don't relay to network */
         );
 
         /* Still too big, split it up (with users approval) */
         if (error == TOO_MANY_INPUTS_TO_FIT_IN_BLOCK)
         {
-            std::cout << WarningMsg("Your transaction is still too large to be accepted "
-                                    "by the network. Try splitting your transaction up into smaller "
-                                    "amounts.");
+            std::cout << WarningMsg(
+                "Your transaction is still too large to be accepted "
+                "by the network. Try splitting your transaction up into smaller "
+                "amounts.");
 
             cancel();
 
@@ -194,7 +202,9 @@ void sendTransaction(
 
     /* Figure out the actual amount if we're performing a send_all now we have
      * the fee worked out. */
-    const uint64_t actualAmount = sendAll ? unlockedBalance - nodeFee - preparedTransaction.fee : amount;
+    const uint64_t actualAmount = sendAll
+        ? unlockedBalance - nodeFee - preparedTransaction.fee
+        : amount;
 
     if (!confirmTransaction(walletBackend, address, actualAmount, paymentID, nodeFee, preparedTransaction.fee))
     {
@@ -230,8 +240,8 @@ bool confirmTransaction(
 
     std::cout << "You are sending " << SuccessMsg(Utilities::formatAmount(amount)) << ", with a network fee of "
               << SuccessMsg(Utilities::formatAmount(fee)) << ",\nand a node fee of "
-              << SuccessMsg(Utilities::formatAmount(nodeFee)) << ", for a total of "
-              << SuccessMsg(Utilities::formatAmount(totalAmount));
+              << SuccessMsg(Utilities::formatAmount(nodeFee))
+              << ", for a total of " << SuccessMsg(Utilities::formatAmount(totalAmount));
 
     if (paymentID != "")
     {

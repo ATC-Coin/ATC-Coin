@@ -134,8 +134,7 @@ namespace CryptoNote
                     case TransactionValidationError::SIZE_TOO_LARGE:
                         return "Transaction is too large (in bytes)";
                     case TransactionValidationError::MINER_OUTPUT_NOT_CLAIMED:
-                        return "Coinbase transaction derived spend key does not match supplied public spend key in "
-                               "tx_extra.";
+                        return "Coinbase transaction derived spend key does not match supplied public spend key in tx_extra.";
                     default:
                         return "Unknown error";
                 }

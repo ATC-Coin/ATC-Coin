@@ -179,8 +179,7 @@ namespace Common
       private:
         Type type;
 
-        union
-        {
+        union {
             uint8_t valueArray[sizeof(Array)];
             Bool valueBool;
             Integer valueInteger;

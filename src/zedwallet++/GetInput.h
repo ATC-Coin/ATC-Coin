@@ -22,7 +22,4 @@ template<typename T> std::string getInput(const std::vector<T> &availableCommand
 
 std::tuple<std::string, uint16_t, bool> getDaemonAddress();
 
-uint64_t getHeight(const std::string msg);
-uint64_t getHeight();
-
 std::string getHash(const std::string msg, const bool cancelAllowed);

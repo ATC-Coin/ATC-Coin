@@ -39,7 +39,8 @@ namespace Tools
     PasswordContainer::PasswordContainer(std::string &&password): m_empty(false), m_password(std::move(password)) {}
 
     PasswordContainer::PasswordContainer(PasswordContainer &&rhs):
-        m_empty(std::move(rhs.m_empty)), m_password(std::move(rhs.m_password))
+        m_empty(std::move(rhs.m_empty)),
+        m_password(std::move(rhs.m_password))
     {
     }
 

@@ -271,7 +271,10 @@ namespace System
     }
 
     TcpConnection::TcpConnection(Dispatcher &dispatcher, size_t connection):
-        dispatcher(&dispatcher), connection(connection), readContext(nullptr), writeContext(nullptr)
+        dispatcher(&dispatcher),
+        connection(connection),
+        readContext(nullptr),
+        writeContext(nullptr)
     {
     }
 

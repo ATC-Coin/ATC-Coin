@@ -7,7 +7,6 @@
 
 #include "common/CryptoNoteTools.h"
 #include "common/FileSystemShim.h"
-
 #include <sstream>
 
 namespace CryptoNote
@@ -65,8 +64,8 @@ namespace CryptoNote
 
             errorMessage << "Local blockchain cache corruption detected." << std::endl
                          << "Block with index " << std::to_string(index)
-                         << " could not be deserialized from the blockchain cache." << std::endl
-                         << std::endl
+                         << " could not be deserialized from the blockchain cache."
+                         << std::endl << std::endl
                          << "Please try to repair this issue by starting the node with the option: "
                          << "--rewind-to-height " << std::to_string(index - 1) << std::endl
                          << "If the above does not repair the issue, "

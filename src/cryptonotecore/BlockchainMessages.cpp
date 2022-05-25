@@ -10,22 +10,26 @@ namespace CryptoNote
     BlockchainMessage::BlockchainMessage(const NewBlock &message): type(Type::NewBlock), newBlock(std::move(message)) {}
 
     BlockchainMessage::BlockchainMessage(const NewAlternativeBlock &message):
-        type(Type::NewAlternativeBlock), newAlternativeBlock(message)
+        type(Type::NewAlternativeBlock),
+        newAlternativeBlock(message)
     {
     }
 
     BlockchainMessage::BlockchainMessage(const ChainSwitch &message):
-        type(Type::ChainSwitch), chainSwitch(new ChainSwitch(message))
+        type(Type::ChainSwitch),
+        chainSwitch(new ChainSwitch(message))
     {
     }
 
     BlockchainMessage::BlockchainMessage(const AddTransaction &message):
-        type(Type::AddTransaction), addTransaction(new AddTransaction(message))
+        type(Type::AddTransaction),
+        addTransaction(new AddTransaction(message))
     {
     }
 
     BlockchainMessage::BlockchainMessage(const DeleteTransaction &message):
-        type(Type::DeleteTransaction), deleteTransaction(new DeleteTransaction(message))
+        type(Type::DeleteTransaction),
+        deleteTransaction(new DeleteTransaction(message))
     {
     }
 
